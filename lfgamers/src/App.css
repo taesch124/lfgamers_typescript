@@ -1,0 +1,12 @@
+.App{
+  background-color: #2a1c41;
+  min-height: 100vh;
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  font-size: calc(10px + 2vmin);
+}
+
+.main-content {
+  flex-grow: 1;
+}
