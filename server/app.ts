@@ -1,9 +1,16 @@
+const mongoose = require('mongoose');
 const express = require('express');
 const session = require('express-session');
 const path = require('path');
 
+const authRouter = require('./routes/auth.ts');
+
 const app = express();
 const PORT = process.env.PORT || 8080;
+
+const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost/LFGamers_Typescript';
+
+mongoose.connect(MONGODB_URI, {newUrlParser: true});
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -15,6 +22,8 @@ app.use(
         saveUninitialized: true,
     })
 );
+
+app.use('/api/auth', authRouter);
 
 //production mode
 if(process.env.NODE_ENV === 'production') {

@@ -20,6 +20,5 @@
   },
   "homepage": "https://github.com/taesch124/lfgamers_typescript#readme",
   "dependencies": {
-    "@types/react-router-dom": "^5.1.2"
   }
 }
