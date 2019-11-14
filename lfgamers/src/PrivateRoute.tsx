@@ -1,15 +1,26 @@
 import React from 'react';
-import { Route, Redirect } from 'react-router-dom';
+import { Route, Redirect, withRouter, RouteComponentProps } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { AppState } from './Reducers/store';
+
+interface IProps extends RouteComponentProps {
+    exact?: boolean,
+    path: string,
+    component: React.ComponentType<any>,
+    user: {},
+    loggedIn: boolean,
+    history: any
+}
   
-  const PrivateRoute = (props: any) => { 
-    console.log(props.Component);
+  const PrivateRoute = ({
+      component: Component,
+    ...otherProps
+  }: IProps )  => { 
     return(
-    <Route {...props.rest} render={(p) => (
-        props.loggedIn
-        ? <props.Component {...p}/>
-        : <Redirect to='/auth/login' />
+    <Route {...otherProps} render={(p) => (
+        otherProps.loggedIn
+        ? <Component {...p}/>
+        : otherProps.history.push('/auth/login')
     )} />
   )}
 
@@ -20,4 +31,4 @@ import { AppState } from './Reducers/store';
     }
   }
   
-  export default connect(mapStateToProps)(PrivateRoute);
+  export default withRouter(connect(mapStateToProps)(PrivateRoute));

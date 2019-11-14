@@ -22,7 +22,8 @@ import { withRouter } from 'react-router-dom';
     
         console.log('Loggin on as ' + username);
         axios.post('/api/auth/login', {
-            user
+            username: user.username,
+            password: user.password
         })
         .then(response => {
             props.logon(response.data.results);
@@ -65,8 +66,6 @@ import { withRouter } from 'react-router-dom';
     )
     
 }
-
-
 
 const mapDispatchToProps =  {logon};
 

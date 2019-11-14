@@ -1,5 +1,6 @@
-import React from 'react';
-import { Switch, Route, Redirect } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { withRouter, Switch, Route, Redirect } from 'react-router-dom';
+import axios from 'axios';
 import './App.css';
 
 import { Grid, Container } from 'semantic-ui-react';
@@ -12,8 +13,25 @@ import 'semantic-ui-css/semantic.min.css'
 import { AppState } from './Reducers/store';
 import { connect } from 'react-redux';
 import PrivateRoute from './PrivateRoute';
+import { logon } from './Reducers/Auth/authActions';
 
-const App: React.FC = () => {
+const App: React.FC = (props: any) => {
+
+  useEffect(() => {
+    axios.get('/api/auth')
+    .then(response => {
+      const user = response.data;
+      console.log('User from auth: ' + user);
+      if(user) {
+        console.log('User found');
+        props.logon(user);
+        props.history.push('/games/browse');
+      }
+    })
+    .catch(error => {
+      console.error(error);
+    });
+  }, []);
 
   return (
     <div className="App">
@@ -23,7 +41,7 @@ const App: React.FC = () => {
             <Route exact path="/auth/login" render={props => <Login />} />
             <Route exact path="/auth/register" render={props => <Register />} />
 
-            <PrivateRoute exact path="/games/browse" Component={GamesList} />
+            <PrivateRoute exact path="/games/browse" component={GamesList} />
 
             <Redirect to="/auth/login" />
           </Switch>
@@ -40,4 +58,6 @@ const mapStateToProps = (state: AppState) => {
   }
 }
 
-export default connect(mapStateToProps)(App);
+const mapDispatchToProps = { logon };
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(App));

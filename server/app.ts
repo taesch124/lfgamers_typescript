@@ -1,12 +1,14 @@
 const mongoose = require('mongoose');
 const express = require('express');
 const session = require('express-session');
+const passport = require('passport');
 const path = require('path');
 
 const authRouter = require('./routes/auth.ts');
 
 const app = express();
 const PORT = process.env.PORT || 8080;
+require('./config/passport.ts')(passport);
 
 const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost/LFGamers_Typescript';
 
@@ -22,6 +24,9 @@ app.use(
         saveUninitialized: true,
     })
 );
+
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.use('/api/auth', authRouter);
 

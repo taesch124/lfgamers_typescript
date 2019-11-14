@@ -2,6 +2,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 import { Container, Menu } from 'semantic-ui-react';
 import {Link} from 'react-router-dom';
+import axios from 'axios';
 
 import {logout} from './../../Reducers/Auth/authActions';
 import { AppState } from './../../Reducers/store';
@@ -10,8 +11,17 @@ import { AuthState } from './../../Reducers/Auth/authState';
 const Navbar = (props: any) => {
 
     const handleLogout = () => {
-        props.logout();
-        window.location.assign('/auth/login');
+        axios.get('/api/auth/logout')
+        .then(response => {
+            if(response.data.error) {
+                console.error(response.data.error);
+                return;
+            } else {
+                props.logout();
+                console.log('Logged out');
+                props.history.push('/auth/login');
+            }
+        });
     }
 
     return (
