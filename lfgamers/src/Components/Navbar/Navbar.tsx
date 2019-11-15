@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {connect} from 'react-redux';
 import { Container, Menu } from 'semantic-ui-react';
 import {Link} from 'react-router-dom';
@@ -9,6 +9,7 @@ import { AppState } from './../../Reducers/store';
 import { AuthState } from './../../Reducers/Auth/authState';
 
 const Navbar = (props: any) => {
+    const [activePage, setActivePage] = useState<string>('Login');
 
     const handleLogout = () => {
         axios.get('/api/auth/logout')
@@ -33,7 +34,8 @@ const Navbar = (props: any) => {
                         <Link to="/games/browse">
                             <Menu.Item
                                 name="browse"
-                                active={false}
+                                active={activePage === 'Browse'}
+                                onClick={e => setActivePage('Browse')}
                             >
                                 Browse Games
                             </Menu.Item>
@@ -53,7 +55,8 @@ const Navbar = (props: any) => {
                         <Link to="/auth/login">
                             <Menu.Item
                                 name="login"
-                                active={true}
+                                active={activePage === 'Login'}
+                                onClick={e => setActivePage('Login')}
                             >
                                 Login
                             </Menu.Item>
@@ -61,7 +64,8 @@ const Navbar = (props: any) => {
                         <Link to="/auth/register">
                             <Menu.Item
                                 name="register"
-                                active={false}
+                                active={activePage === 'Register'}
+                                onClick={e => setActivePage('Register')}
                             >
                                 Register
                             </Menu.Item>

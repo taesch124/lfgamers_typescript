@@ -5,6 +5,7 @@ const passport = require('passport');
 const path = require('path');
 
 const authRouter = require('./routes/auth.ts');
+const gamesRouter = require('./routes/games.ts');
 
 const app = express();
 const PORT = process.env.PORT || 8080;
@@ -29,6 +30,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use('/api/auth', authRouter);
+app.use('/api/games', gamesRouter);
 
 //production mode
 if(process.env.NODE_ENV === 'production') {
