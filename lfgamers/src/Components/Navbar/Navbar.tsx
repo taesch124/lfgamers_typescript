@@ -6,7 +6,6 @@ import axios from 'axios';
 
 import {logout} from './../../Reducers/Auth/authActions';
 import { AppState } from './../../Reducers/store';
-import { AuthState } from './../../Reducers/Auth/authState';
 
 const Navbar = (props: any) => {
     const [activePage, setActivePage] = useState<string>('Login');

@@ -9,20 +9,27 @@ const platforms = require('./../config/igdb.ts').igdbPlatforms;
 const baseUrl = 'https://api-v3.igdb.com';
 axios.defaults.headers.common['user-key'] = Keys.igdb;
 axios.defaults.headers.common['Accept'] = 'application/json';
+axios.defaults.headers.common['Content-Type'] = 'application/apicalypse';
 
 
 
 async function searchPopularGames() {
-    let currentDate = new Date();
-    let endDate = moment(currentDate).format('YYYY-MM-DD');
-    let startDate = moment(currentDate).subtract(2, 'months').format('YYYY-MM-DD');
+    let currentDate = new Date().valueOf();
+    let startDate = moment(currentDate).subtract(2, 'months').valueOf();
     let fields = fieldList.join(',');
-    console.log(startDate, endDate);
+    const limit = 10;
 
-    let url = `${baseUrl}/games/?limit=10&fields=${fields}&release_dates.date-gt=${startDate}&release_dates.date-lt=${endDate}&rating-gt=75`;
+    let url = `${baseUrl}/games`;
+    let body = `fields ${fields};
+    limit ${limit};
+    where first_release_date > ${startDate} & first_release_date < ${currentDate} & aggregated_rating > 75;`;
     
     try {
-        let response = await axios.get(url);
+        let response = await axios({
+            url,
+            method: 'POST',
+            data: body
+        });
         return response.data;
     } catch(error) {
         return {
@@ -30,21 +37,20 @@ async function searchPopularGames() {
             message: error,
         }
     }
-    
-    // .then(response => {
-    //     console.log(response.data);
-    //     return response.data;
-    // })
-    // .catch(error => {
-    //     console.log('Uh oh');
-    //     console.error(error);
-    //     return {
-    //         error: true,
-    //         message: error
-    //     }
-    // });
+}
+
+function parseEnumeratedField(json, data) {
+    let fieldValues = [];
+    if(!json) return fieldValues;
+    for (let i = 0; i < json.length; i++) {
+        let value = data[json[i]];
+        if(!value) continue;
+        fieldValues.push(value);
+    }
+    return fieldValues;
 }
 
 module.exports = {
     searchPopularGames,
+    parseEnumeratedField
 };

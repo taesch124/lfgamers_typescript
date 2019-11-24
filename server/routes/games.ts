@@ -1,14 +1,12 @@
 const express = require('express');
 const igdb = require('./../api/igdb.ts');
+const gamesController = require('./../controllers/gamesController.ts');
 
 const router = express.Router();
 
 router.get('/browse', async (req, res) => {
     try {
-        console.log('getting games');
-        let games = await igdb.searchPopularGames();
-        console.log('Games at route.')
-        console.log(games);
+        let games = await gamesController.getAndSavePopularGames();
         return res.json(games);
     }
     catch(error) {

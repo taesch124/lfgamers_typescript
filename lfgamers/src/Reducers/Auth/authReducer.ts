@@ -1,5 +1,3 @@
-import { string, object } from "prop-types"
-
 import { AuthState, UserState } from './authState';
 import { AuthActionTypes, LOGON, LOGOUT } from './authActions';
 

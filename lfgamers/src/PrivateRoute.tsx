@@ -1,4 +1,5 @@
 import React from 'react';
+import Redux from 'react-redux';
 import { Route, Redirect, withRouter, RouteComponentProps } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { AppState } from './Reducers/store';
@@ -6,7 +7,7 @@ import { AppState } from './Reducers/store';
 interface IProps extends RouteComponentProps {
     exact?: boolean,
     path: string,
-    component: React.ComponentType<any>,
+    component: React.ComponentType<any> | Redux.ConnectedComponent<any, any>,
     user: {},
     loggedIn: boolean,
     history: any
