@@ -10,7 +10,6 @@ import { withRouter } from 'react-router-dom';
  const LoginForm = (props: any) => {
     const [username, setUsername ] = useState('');
     const [password, setPassword] = useState('');
-    console.log(store.getState());
 
     const handleLogon = (e: any) => {
         e.preventDefault();

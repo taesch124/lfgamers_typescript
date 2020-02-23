@@ -4,7 +4,6 @@ const passwordEncryptor = require('./../helpers/passwordEncryption.ts');
 async function login(user) {
     try {
         let userExists = await User.findOne({username: user.username});
-        console.log(userExists);
         if(!userExists) return {
             error: true,
             field: 'Username',
@@ -13,7 +12,6 @@ async function login(user) {
 
         let passwordMatch = await passwordEncryptor.validatePassword(user.password, userExists.password);
         if(passwordMatch) {
-            console.log('Logging in ' + user.username);
             return {
                 error: false,
                 results: userExists,

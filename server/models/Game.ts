@@ -37,7 +37,15 @@ const GameSchema = new Schema({
         required: false
     },
     cover: {
-        type: Object,
+        type: Number,
+        required: false
+    },
+    coverId: {
+        type: Number,
+        required: false
+    },
+    poster: {
+        type: String,
         required: false
     }
 });

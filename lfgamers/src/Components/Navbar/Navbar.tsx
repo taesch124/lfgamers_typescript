@@ -19,7 +19,6 @@ const Navbar = (props: any) => {
             } else {
                 props.logout();
                 console.log('Logged out');
-                props.history.push('/auth/login');
             }
         });
     }

@@ -14,15 +14,17 @@ axios.defaults.headers.common['Content-Type'] = 'application/apicalypse';
 
 
 async function searchPopularGames() {
-    let currentDate = new Date().valueOf();
-    let startDate = moment(currentDate).subtract(2, 'months').valueOf();
+    let currentDate = new Date();
+    let startDate = Math.floor(moment(currentDate).subtract(3, 'months').valueOf()/1000);
+    let endDate = Math.floor(moment(currentDate).valueOf()/1000);
     let fields = fieldList.join(',');
     const limit = 10;
+    console.log(currentDate, startDate, endDate);
 
     let url = `${baseUrl}/games`;
     let body = `fields ${fields};
     limit ${limit};
-    where first_release_date > ${startDate} & first_release_date < ${currentDate} & aggregated_rating > 75;`;
+    where first_release_date > ${startDate} & first_release_date < ${endDate} & aggregated_rating > 80 & version_parent = null;`;
     
     try {
         let response = await axios({
@@ -32,6 +34,52 @@ async function searchPopularGames() {
         });
         return response.data;
     } catch(error) {
+        return {
+            error: true,
+            message: error,
+        }
+    }
+}
+
+async function searchGames(searchPhrase) {
+    let fields = fieldList.join(',');
+    const limit = 10;
+
+    const url = `${baseUrl}/games`;
+    let body = `fields ${fields};
+    limit ${limit};
+    search "${searchPhrase}";
+    where version_parent = null;`;
+
+    try {
+        const response = await axios({
+            url,
+            method: 'POST',
+            data: body
+        });
+        return response.data;
+    } catch(error) {
+        console.error(error);
+        return {
+            error: true,
+            message: error
+        }
+    }
+}
+
+async function getPoster(gameId) {
+    const url = `${baseUrl}/covers`;
+    const body = `fields game,url;
+    where game = ${gameId};`
+
+    try {
+        let response = await axios({
+            url,
+            method: 'POST',
+            data: body
+        });
+        return response.data;
+    } catch (error) {
         return {
             error: true,
             message: error,
@@ -52,5 +100,7 @@ function parseEnumeratedField(json, data) {
 
 module.exports = {
     searchPopularGames,
+    searchGames,
+    getPoster,
     parseEnumeratedField
 };

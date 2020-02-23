@@ -11,12 +11,35 @@ router.get('/browse', async (req, res) => {
     }
     catch(error) {
         console.error(error);
-        return {
+        return res.json({
             error: true,
             message: error
-        }
+        });
     }
     
 });
+
+router.get('/search/:search', async (req, res) => {
+    const search = req.params.search;
+    console.log(search);
+    if(search) {
+        try {
+            const games = await gamesController.searchAndSaveGames(search);
+            return res.json(games);
+        } catch (error) {
+            console.error(error);
+            return  res.json({
+                error: true,
+                message: error
+            });
+        }
+    } else {
+        return res.json({
+            error: true,
+            message: 'Error: No search phrase entered'
+        });
+    }
+
+})
 
 module.exports = router;

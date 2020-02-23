@@ -1,8 +1,9 @@
 export const SET_GAMES = 'SET_GAMES';
+export const FETCHING_GAMES = 'FETCHING_GAMES';
 
 interface SetGamesAction {
-    type: typeof SET_GAMES,
-    payload: [],
+    type: typeof SET_GAMES | typeof FETCHING_GAMES,
+    payload?: Array<{}>,
 }
 
 export function setGames(games: []) : IgdbActionTypes {
@@ -12,6 +13,10 @@ export function setGames(games: []) : IgdbActionTypes {
     }
 }
 
-
+export function fetchingGames() : IgdbActionTypes {
+    return {
+        type: FETCHING_GAMES,
+    }
+}
 
 export type IgdbActionTypes = SetGamesAction;

@@ -1,3 +1,4 @@
 export interface IgdbState {
-    games: Array<{}>,
+    fetching: boolean;
+    games: Array<{}> | undefined;
 }

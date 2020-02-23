@@ -5,18 +5,13 @@ import axios from 'axios';
 
 import { Form, Button, Message } from 'semantic-ui-react';
 import { store } from './../../Reducers/store';
-
-
-type RegisterError = {
-    field: string,
-    message: string,
-};
+import FormError from './../../UI.d/FormError';
 
  const RegisterForm = (props: any) => {
     const [username, setUsername ] = useState<string>('');
     const [email, setEmail ] = useState<string>('');
     const [password, setPassword] = useState<string>('');
-    const [errors, setErrors] = useState<Array<RegisterError>>([]);
+    const [errors, setErrors] = useState<Array<FormError>>([]);
     console.log(store.getState());
 
     const handleRegister = (e: any) => {
@@ -90,7 +85,7 @@ type RegisterError = {
                 </Button>
             </Form>
             {errors.length > 0 ?
-                errors.map((error: RegisterError, index: number)  => {
+                errors.map((error: FormError, index: number)  => {
                     return (
                         <Message
                             error
