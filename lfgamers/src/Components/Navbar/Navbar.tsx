@@ -1,13 +1,16 @@
 import React, { useState } from 'react';
-import {connect} from 'react-redux';
 import { Container, Menu } from 'semantic-ui-react';
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
+import { NavbarProps } from '.';
 
-import {logout} from './../../Reducers/Auth/authActions';
-import { AppState } from './../../Reducers/store';
+export const Navbar = (props: NavbarProps) => {
+    const {
+        loggedIn,
+        logout,
+        clearGameSelection
+    } = props;
 
-const Navbar = (props: any) => {
     const [activePage, setActivePage] = useState<string>('Login');
 
     const handleLogout = () => {
@@ -17,7 +20,7 @@ const Navbar = (props: any) => {
                 console.error(response.data.error);
                 return;
             } else {
-                props.logout();
+                logout();
                 console.log('Logged out');
             }
         });
@@ -27,13 +30,17 @@ const Navbar = (props: any) => {
         <Container fluid>
             <Menu>
                 <Container>
-                    {props.loggedIn ?
+                    {loggedIn ?
                     <>
                         <Link to="/games/browse">
                             <Menu.Item
                                 name="browse"
                                 active={activePage === 'Browse'}
-                                onClick={e => setActivePage('Browse')}
+                                onClick={e => {
+                                    console.log('Clicked browse link');
+                                    clearGameSelection();
+                                    setActivePage('Browse');
+                                }}
                             >
                                 Browse Games
                             </Menu.Item>
@@ -75,16 +82,4 @@ const Navbar = (props: any) => {
             </Menu>
         </Container>
     )
-    
 }
-
-const mapStateToProps = (state: AppState) => {
-    return {
-        user: state.auth.user,
-        loggedIn: state.auth.loggedIn,
-    }
-}
-
-const mapDispatchToProps = {logout};
-
-export default connect(mapStateToProps, mapDispatchToProps)(Navbar);

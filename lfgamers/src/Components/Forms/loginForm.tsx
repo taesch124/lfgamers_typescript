@@ -4,7 +4,6 @@ import axios from 'axios';
 
 import { Form, Button } from 'semantic-ui-react';
 import {logon} from './../../Reducers/Auth/authActions';
-import { store } from './../../Reducers/store';
 import { withRouter } from 'react-router-dom';
 
  const LoginForm = (props: any) => {

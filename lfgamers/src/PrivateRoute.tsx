@@ -1,6 +1,6 @@
 import React from 'react';
 import Redux from 'react-redux';
-import { Route, Redirect, withRouter, RouteComponentProps } from 'react-router-dom';
+import { Route, withRouter, RouteComponentProps } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { AppState } from './Reducers/store';
 

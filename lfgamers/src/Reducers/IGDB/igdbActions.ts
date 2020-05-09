@@ -1,9 +1,11 @@
+import { Game } from "../../UI.d/Game";
+
 export const SET_GAMES = 'SET_GAMES';
 export const FETCHING_GAMES = 'FETCHING_GAMES';
 
-interface SetGamesAction {
+interface IGDBActions {
     type: typeof SET_GAMES | typeof FETCHING_GAMES,
-    payload?: Array<{}>,
+    payload?: Array<Game>,
 }
 
 export function setGames(games: []) : IgdbActionTypes {
@@ -19,4 +21,4 @@ export function fetchingGames() : IgdbActionTypes {
     }
 }
 
-export type IgdbActionTypes = SetGamesAction;
+export type IgdbActionTypes = IGDBActions;

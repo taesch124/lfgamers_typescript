@@ -1,19 +1,20 @@
 import React, { useEffect } from 'react';
 import { withRouter, Switch, Route, Redirect } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { Grid } from 'semantic-ui-react';
 import axios from 'axios';
-import './App.css';
 
-import { Grid, Container } from 'semantic-ui-react';
-
-import Navbar from './Components/Navbar/Navbar';
+import Navbar from './Components/Navbar';
 import Login from './Components/Auth/login';
 import Register from './Components/Auth/register';
-import GamesList from './Components/Games/gamesList';
-import 'semantic-ui-css/semantic.min.css'
-import { AppState } from './Reducers/store';
-import { connect } from 'react-redux';
+import GamesContainer from './Containers/Games';
 import PrivateRoute from './PrivateRoute';
+
+import { AppState } from './Reducers/store';
 import { logon } from './Reducers/Auth/authActions';
+
+import 'semantic-ui-css/semantic.min.css';
+import './App.css';
 
 const App: React.FC = (props: any) => {
 
@@ -41,7 +42,8 @@ const App: React.FC = (props: any) => {
             <Route exact path="/auth/login" render={props => <Login />} />
             <Route exact path="/auth/register" render={props => <Register />} />
 
-            <PrivateRoute exact path="/games/browse" component={GamesList} />
+            <PrivateRoute exact path="/games/browse" component={GamesContainer} />
+            {/* <PrivateRoute exact path="/games/:gameId" component={GameScreen} />  */}
 
             <Redirect to="/auth/login" />
           </Switch>

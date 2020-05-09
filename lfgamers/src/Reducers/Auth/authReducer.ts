@@ -2,7 +2,7 @@ import { AuthState, UserState } from './authState';
 import { AuthActionTypes, LOGON, LOGOUT } from './authActions';
 
 const initialState: AuthState = {
-    user: {},
+    user: {} as UserState,
     loggedIn: false
 }
 

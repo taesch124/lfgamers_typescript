@@ -1,0 +1,1 @@
+export const IGDB_TIMEOUT = 8000;

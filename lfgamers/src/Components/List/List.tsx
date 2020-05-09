@@ -1,8 +1,7 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {Loader} from 'semantic-ui-react';
 
 const List = (props: any) => {
-    const [loading, setLoading] = useState<boolean>(false);
 
     return (
         <React.Fragment>
