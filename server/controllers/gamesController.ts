@@ -94,7 +94,15 @@ async function createAndSaveGame(gameObj, response, bulk) {
     bulk.push(command);
 }
 
+async function getGameById(gameId) {
+    const game = await Game.find({"_id": gameId })
+    console.log('found game');
+    console.log(game);
+    return game;
+}
+
 module.exports = {
     getAndSavePopularGames,
-    searchAndSaveGames
+    searchAndSaveGames,
+    getGameById,
 }

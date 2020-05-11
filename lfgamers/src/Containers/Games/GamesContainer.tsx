@@ -17,7 +17,7 @@ export function GamesContainer(props: GamesContainerProps) {
                 <Divider hidden />
                 {!selectedGame ?
                     <>
-                        <Header as="h2" color="teal" textAlign="center">
+                        <Header as="h2" color="blue" textAlign="center">
                             <Image src={logo} /> Games
                         </Header>
                         <GamesList />

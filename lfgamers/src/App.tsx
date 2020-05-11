@@ -1,57 +1,21 @@
-import React, { useEffect } from 'react';
-import { withRouter, Switch, Route, Redirect } from 'react-router-dom';
-import { connect } from 'react-redux';
-import { Grid } from 'semantic-ui-react';
+import React from 'react';
+import { connect, ConnectedProps } from 'react-redux';
 import axios from 'axios';
+import { withRouter, Switch, Route, RouteComponentProps, Redirect, match } from 'react-router-dom';
+import { Grid, Loader, Container } from 'semantic-ui-react';
 
 import Navbar from './Components/Navbar';
 import Login from './Components/Auth/login';
 import Register from './Components/Auth/register';
 import GamesContainer from './Containers/Games';
 import PrivateRoute from './PrivateRoute';
-
 import { AppState } from './Reducers/store';
 import { logon } from './Reducers/Auth/authActions';
+import { selectGame } from './Reducers/UI/uiActions';
 
 import 'semantic-ui-css/semantic.min.css';
 import './App.css';
 
-const App: React.FC = (props: any) => {
-
-  useEffect(() => {
-    axios.get('/api/auth')
-    .then(response => {
-      const user = response.data;
-      console.log('User from auth: ' + user);
-      if(user) {
-        console.log('User found');
-        props.logon(user);
-        props.history.push('/games/browse');
-      }
-    })
-    .catch(error => {
-      console.error(error);
-    });
-  }, []);
-
-  return (
-    <div className="App">
-        <Navbar />
-        <Grid centered style={{ width: '100%' }} className="main-content">
-          <Switch>
-            <Route exact path="/auth/login" render={props => <Login />} />
-            <Route exact path="/auth/register" render={props => <Register />} />
-
-            <PrivateRoute exact path="/games/browse" component={GamesContainer} />
-            {/* <PrivateRoute exact path="/games/:gameId" component={GameScreen} />  */}
-
-            <Redirect to="/auth/login" />
-          </Switch>
-        </Grid>
-        
-    </div>
-  );
-}
 
 const mapStateToProps = (state: AppState) => {
   return {
@@ -60,6 +24,99 @@ const mapStateToProps = (state: AppState) => {
   }
 }
 
-const mapDispatchToProps = { logon };
+const mapDispatchToProps = { logon, selectGame };
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(App));
+const enhance = connect(mapStateToProps, mapDispatchToProps);
+
+interface AppProps extends 
+ConnectedProps<typeof enhance>,
+RouteComponentProps<any> {};
+
+const App = (props: AppProps) => {
+  const {
+    match,
+    history,
+    loggedIn,
+    logon,
+  } = props;
+
+  const [checked, setChecked] = React.useState<boolean>(false);
+
+  const checkForUser = async () => {
+    if(loggedIn) return;
+
+    try {
+      const response = await axios.get('/api/auth');
+      const user = response.data;
+      if(user) {
+        console.log('user found');
+        console.log(user);
+        logon(user);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  const checkForGame = async () => {
+    console.log(match);
+    const gameId = match.params.gameId;
+        if(gameId) {
+          console.log('game id found');
+          const selectedGame = (await axios.get(`/api/games/game/${gameId}`)).data;
+          console.log(selectedGame);
+          selectGame(selectedGame);
+          setChecked(true);
+          history.push(`/games/game/${selectedGame._id}`);
+        } else {
+          setChecked(true);
+          history.push('/games/browse');
+        }
+  }
+
+  React.useEffect(() => {
+    if(!loggedIn && !checked) {
+      checkForUser();
+    }
+  }, []);
+
+  React.useEffect(() => {
+    console.log('log in state changed to ' + loggedIn);
+    if(loggedIn && !checked) {
+      console.log('checking game');
+      checkForGame();
+    } else {
+      setChecked(true);
+    }
+  }, [loggedIn]);
+
+  if(!checked) {
+    return (
+      <div className="App">
+          <Loader active/>
+      </div>
+    )
+  }
+
+  return (
+    <div className="App">
+        <Navbar />
+        <Container fluid style={{ width: '100%' }} className="main-content">
+          <Switch>
+            <Route exact path="/auth/login" render={props => <Login />} />
+            <Route exact path="/auth/register" render={props => <Register />} />
+
+            <PrivateRoute exact path="/games/browse" component={GamesContainer} />
+            <PrivateRoute exact path="/games/game/:gameId" component={GamesContainer} />
+
+            <Redirect to="/auth/login" />
+          </Switch>
+        </Container>
+        
+    </div>
+  );
+}
+
+
+
+export default enhance(withRouter(App));

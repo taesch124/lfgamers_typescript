@@ -5,6 +5,7 @@ export interface Game {
     summary: string;
     releaseDate: string;
     cover: number;
+    poster?: string;
     rating: number;
     popularity: number;
     genres?: Array<string>,

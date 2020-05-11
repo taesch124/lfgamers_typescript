@@ -1,12 +1,14 @@
+import { User } from "../../UI.d/User";
+
 export const LOGON = 'LOGON';
 export const LOGOUT = 'LOUGOUT';
 
 interface LogonAction {
     type: typeof LOGON,
-    payload: string,
+    payload: User,
 }
 
-export function logon(user: string) : AuthActionTypes {
+export function logon(user: User) : AuthActionTypes {
     return {
         type: LOGON,
         payload: user

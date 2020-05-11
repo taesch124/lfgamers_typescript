@@ -1,42 +1,51 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import moment from 'moment';
-import {Card, CardContent, CardHeader, CardMeta, CardDescription} from 'semantic-ui-react';
-
-import {selectGame} from './../../../Reducers/UI/uiActions';
+import {Card, CardContent, CardMeta, CardDescription, Grid} from 'semantic-ui-react';
+import { GameCardProps } from '.';
+import { Game } from '../../../UI.d/Game';
 
 import './gameCard.css';
+import { FavoriteGameButton } from '../../Buttons';
 
-const GameCard = (props: any) => {
+export const GameCard = (props: GameCardProps) => {
     const {
         game,
+        history,
         selectGame
     } = props;
 
+    const goToGamePage = (game: Game) => {
+        history.push(`/games/game/${game._id}`);
+        selectGame(game);
+    }
+
     return (
-        <Card className="igdb-game-card" onClick={() => selectGame(game)}>
+        <Card className="igdb-game-card" onClick={() => goToGamePage(game)}>
             <CardContent>
-                <CardHeader>
-                    {game.poster
-                    ?
-                    <img src={game.poster} alt={`${game.name}'s poster`}/>
-                    :
-                    null
-                    }
-                    <br/>
-                    {game.name}
-                </CardHeader>
-                <CardMeta>
-                    Released: {game.releaseDate ? moment(game.releaseDate).format('MM/DD/YYYY') : 'N/A'}
-                </CardMeta>
-                <CardDescription>
-                    {game.summary}
-                </CardDescription>
+                <Grid>
+                    <Grid.Row>
+                            <Grid.Column width={2}>
+                                {game.poster &&
+                                    <img className="game-card-poster" src={game.poster} alt={`${game.name}'s poster`}/>
+                                }
+                            </Grid.Column>
+                            <Grid.Column width={13}>
+                                <h4 className="game-card-title">{game.name}</h4>
+                                <CardMeta>
+                                    Released: {game.releaseDate ? moment(game.releaseDate).format('MM/DD/YYYY') : 'N/A'}
+                                </CardMeta>
+                            </Grid.Column>
+                            <Grid.Column width={1} textAlign="right">
+                                <FavoriteGameButton />
+                            </Grid.Column>
+                    </Grid.Row>
+                    <Grid.Row>
+                        <CardDescription>
+                            <p className="game-card-summary">{game.summary}</p>
+                        </CardDescription>
+                    </Grid.Row>
+                </Grid>
             </CardContent>
         </Card>
     )
 }
-
-const mapDispatchToProps =  {selectGame};
-
-export default connect(null, mapDispatchToProps)(GameCard);

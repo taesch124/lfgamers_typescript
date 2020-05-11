@@ -12,7 +12,7 @@ export const igdbReducer = (state: IgdbState = initialState, action: IgdbActionT
             return {
                 ...state,
                 fetching: false,
-                games: action.payload
+                games: action.payload ? action.payload : []
             }
         case FETCHING_GAMES:
             return {

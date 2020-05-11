@@ -1,20 +1,17 @@
 import React, { useState } from 'react';
-import { withRouter } from 'react-router-dom';
-import {connect} from 'react-redux';
 import axios from 'axios';
 
 import { Form, Button, Message } from 'semantic-ui-react';
-import { store } from './../../Reducers/store';
-import FormError from './../../UI.d/FormError';
+import FormError from '../../../UI.d/FormError';
+import { RegisterFormProps } from '.';
 
- const RegisterForm = (props: any) => {
+export const RegisterForm = (props: RegisterFormProps) => {
     const [username, setUsername ] = useState<string>('');
     const [email, setEmail ] = useState<string>('');
     const [password, setPassword] = useState<string>('');
     const [errors, setErrors] = useState<Array<FormError>>([]);
-    console.log(store.getState());
 
-    const handleRegister = (e: any) => {
+    const handleRegister = async (e: any) => {
         e.preventDefault();
         setErrors([]);
 
@@ -26,13 +23,9 @@ import FormError from './../../UI.d/FormError';
             password,
         }
         console.log('Registering as ' + username);
-        axios.post('/api/auth/register', {
-            user
-        })
-        .then(response => {
-            console.log(response.data);
+        try {
+            const response = await axios.post('/api/auth/register', {user});
             if(response.data.error) {
-
                 setErrors([{
                     field: response.data.field,
                     message: response.data.message,
@@ -41,10 +34,9 @@ import FormError from './../../UI.d/FormError';
                 console.log('rerouting to login!');
                 props.history.push('/auth/login');
             }
-        })
-        .catch(error => {
+        } catch(error) {
             console.error(error);
-        })
+        }
     }
 
     return (
@@ -103,5 +95,3 @@ import FormError from './../../UI.d/FormError';
     )
     
 }
-
-export default withRouter(connect( null , null)(RegisterForm));

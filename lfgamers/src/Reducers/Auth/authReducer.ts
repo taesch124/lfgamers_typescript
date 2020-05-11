@@ -1,8 +1,8 @@
-import { AuthState, UserState } from './authState';
+import { AuthState } from './authState';
 import { AuthActionTypes, LOGON, LOGOUT } from './authActions';
 
 const initialState: AuthState = {
-    user: {} as UserState,
+    user: undefined,
     loggedIn: false
 }
 
@@ -17,7 +17,7 @@ export const authReducer = (state: AuthState = initialState, action: AuthActionT
         case LOGOUT:
             return {
                 ...state,
-                user: {},
+                user: undefined,
                 loggedIn: false
             }
     }

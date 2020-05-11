@@ -15,7 +15,12 @@ const UserSchema = new Schema({
         type: String,
         required: true,
         match: [/.+@.+\..+/, "Please enter a valid e-mail address"],
-    }
+    },
+    favoriteGames: [
+        {
+            type: mongoose.Schema.Types.ObjectId, ref: 'Game'
+        }
+    ]
 });
 
 const User = mongoose.model('User', UserSchema);

@@ -40,6 +40,19 @@ router.get('/search/:search', async (req, res) => {
         });
     }
 
+});
+
+router.get('/games/game/:gameId', async (req, res) => {
+    const gameId = req.params.gameId;
+    if(gameId) {
+        const game = getGameById(gameId);
+        return game;
+    } else {
+        return res.json({
+            error: true,
+            message: 'Error: No game ID provided',
+        })
+    }
 })
 
 module.exports = router;

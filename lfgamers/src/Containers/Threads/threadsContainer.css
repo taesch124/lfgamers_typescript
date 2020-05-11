@@ -1,0 +1,14 @@
+.thread-container {
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+    padding: 1rem;
+}
+
+.no-threads-container {
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+    width: 100%;
+    padding: 1rem;
+}

@@ -5,7 +5,7 @@ export const FETCHING_GAMES = 'FETCHING_GAMES';
 
 interface IGDBActions {
     type: typeof SET_GAMES | typeof FETCHING_GAMES,
-    payload?: Array<Game>,
+    payload?: Game[],
 }
 
 export function setGames(games: []) : IgdbActionTypes {

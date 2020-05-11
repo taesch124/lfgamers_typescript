@@ -1,0 +1,7 @@
+.auth-page-container {
+    flex-grow: 1;
+    display: flex !important;
+    flex-flow: column nowrap;
+    justify-content: center;
+    align-items: center;
+}

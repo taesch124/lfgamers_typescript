@@ -1,14 +1,16 @@
-import { connect } from 'react-redux';
-import { Game } from '../../../UI.d/Game';
+import { connect, ConnectedProps } from 'react-redux';
 import { AppState } from '../../../Reducers/store';
 import { GamePage } from './gamePage';
-
-export interface GamePageProps {
-    selectedGame: Game | undefined;
-}
+import { clearGameSelection } from './../../../Reducers/UI/uiActions';
 
 const mapStateToProps = (state: AppState) => ({
-    selectedGame: state.ui.selectedGame,
+    game: state.ui.selectedGame,
 });
 
-export default connect(mapStateToProps)(GamePage);
+const mapDispatchToProps = { clearGameSelection };
+
+const enhance = connect(mapStateToProps, mapDispatchToProps);
+
+export interface GamePageProps extends ConnectedProps<typeof enhance> {}
+
+export default enhance(GamePage);

@@ -9,3 +9,20 @@
 .igdb-game-card:hover {
     background-color: #d4d4d4 !important;
 }
+
+.game-card-title {
+    font-size: 1.4rem;
+    color: #2a1c41;
+    margin: 0;
+}
+
+.game-card-poster {
+    width: 90px;
+    height: auto;
+}
+
+.game-card-summary {
+    padding: 0 1rem;
+    font-size: 1.1rem;
+    color: #202020;
+}

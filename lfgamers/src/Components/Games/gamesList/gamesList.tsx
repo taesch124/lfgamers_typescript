@@ -4,11 +4,12 @@ import SearchGames from '../../Forms/IGDB/searchGames';
 import axios from 'axios';
 
 import List from '../../List/List';
-import GameCard from '../gameCard/gameCard';
+import GameCard from '../gameCard';
 import { timeoutPromise } from './../../../Lib/promiseHelper';
 import { IGDB_TIMEOUT } from './../../../Lib/constants';
+import { GamesListProps } from '.';
 
-export const GamesList = (props: any) => {
+export const GamesList = (props: GamesListProps) => {
     const {
         games,
         fetching,
@@ -46,7 +47,7 @@ export const GamesList = (props: any) => {
                 <p>Retrieving Games...</p>
             : games.length > 0 ?
                 <List>
-                    {games.map((game: { id: any; }) => <GameCard key={game.id} game={game} />) }
+                    {games.map(game => <GameCard key={game.id} game={game} />) }
                 </List>
             : apiTimeout ?
                 <p>Connection to IGDB timed out</p>

@@ -1,0 +1,13 @@
+.thread-card {
+    cursor: pointer;
+    margin-top: 1rem !important;
+    margin-bottom: 1rem !important;
+}
+
+.thread-card:last-child {
+    margin-bottom: 0 !important;
+}
+
+.thread-card:hover {
+    background-color: #d4d4d4 !important;
+}

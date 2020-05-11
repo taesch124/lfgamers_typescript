@@ -1,4 +1,4 @@
-import { connect } from 'react-redux';
+import { connect, ConnectedProps } from 'react-redux';
 import { GamesList } from './gamesList';
 import { setGames, fetchingGames } from '../../../Reducers/IGDB/igdbActions';
 import { AppState } from '../../../Reducers/store';
@@ -12,4 +12,8 @@ const mapStateToProps = (state: AppState) => {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(GamesList);
+const enhance = connect(mapStateToProps, mapDispatchToProps);
+
+export interface GamesListProps extends ConnectedProps<typeof enhance>{};
+
+export default enhance(GamesList);

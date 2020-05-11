@@ -22,7 +22,7 @@ router.post('/login', async (req, res, next) => {
             if(loginError) return next(loginError);
             console.log('Passport logged in');
             console.log(response);
-            return res.json(response.results);
+            return res.json(response);
         });
     })(req, res, next);
 });

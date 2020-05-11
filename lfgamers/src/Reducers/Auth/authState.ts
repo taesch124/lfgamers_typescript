@@ -1,10 +1,7 @@
+import { User } from "../../UI.d/User";
+
 export interface AuthState {
-    user: {},
+    user: User | undefined,
     loggedIn: boolean,
 }
 
-export interface UserState {
-    username: string,
-    password?: string,
-    email: string
-}

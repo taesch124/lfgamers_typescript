@@ -1,14 +1,24 @@
-import { connect } from 'react-redux';
+import { connect, ConnectedProps } from 'react-redux';
+import { withRouter, RouteComponentProps} from 'react-router-dom';
 import { GamesContainer } from './GamesContainer';
 import { AppState } from '../../Reducers/store';
-import { Game } from '../../UI.d/Game';
 
-export interface GamesContainerProps {
-    selectedGame: Game | undefined;
-}
+const mapStateToProps = (state: AppState, props: GameContainerWithRouter) => {
+    return {
+        selectedGame: state.ui.selectedGame
+    }
+};
 
-const mapStateToProps = (state: AppState) => ({
-    selectedGame: state.ui.selectedGame
-});
+const enhance = connect(mapStateToProps);
 
-export default connect(mapStateToProps)(GamesContainer);
+interface GameContainerWithRouter extends 
+RouteComponentProps<any> {}
+
+interface GamesContainerWithConnect extends
+ConnectedProps<typeof enhance> {}
+
+export interface GamesContainerProps extends 
+GameContainerWithRouter, 
+GamesContainerWithConnect {}
+
+export default enhance(withRouter(GamesContainer));

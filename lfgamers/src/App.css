@@ -7,6 +7,9 @@
   font-size: calc(10px + 2vmin);
 }
 
+
 .main-content {
+  display: flex !important;
+  flex-flow: column nowrap;
   flex-grow: 1;
 }

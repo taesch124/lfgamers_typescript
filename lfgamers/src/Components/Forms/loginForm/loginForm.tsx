@@ -1,16 +1,18 @@
 import React, { useState } from 'react';
-import {connect} from 'react-redux';
 import axios from 'axios';
 
 import { Form, Button } from 'semantic-ui-react';
-import {logon} from './../../Reducers/Auth/authActions';
-import { withRouter } from 'react-router-dom';
+import { LoginFormProps } from '.';
 
- const LoginForm = (props: any) => {
+export const LoginForm = (props: LoginFormProps) => {
+    const {
+        logon
+    } = props;
+
     const [username, setUsername ] = useState('');
     const [password, setPassword] = useState('');
 
-    const handleLogon = (e: any) => {
+    const handleLogon = async (e: any) => {
         e.preventDefault();
 
         const user ={
@@ -18,19 +20,19 @@ import { withRouter } from 'react-router-dom';
             password
         }
     
-        console.log('Loggin on as ' + username);
-        axios.post('/api/auth/login', {
-            username: user.username,
-            password: user.password
-        })
-        .then(response => {
-            props.logon(response.data.results);
-            //window.location.assign('/games/browse');
+        try {
+            console.log('Loggin on as ' + username);
+            const userResult = (await axios.post('/api/auth/login', {
+                username: user.username,
+                password: user.password
+                })).data;
+
+            console.log(userResult);
+            logon(userResult);
             props.history.push('/games/browse');
-        })
-        .catch(error => {
+        } catch(error) {
             console.error(error);
-        });
+        }
     }
 
     return (
@@ -64,7 +66,3 @@ import { withRouter } from 'react-router-dom';
     )
     
 }
-
-const mapDispatchToProps =  {logon};
-
-export default withRouter(connect( null , mapDispatchToProps)(LoginForm));

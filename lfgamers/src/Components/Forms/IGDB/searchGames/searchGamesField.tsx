@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
-import {connect} from 'react-redux';
 import axios from 'axios';
-
 import { Form, Button, Message } from 'semantic-ui-react';
-import { setGames, fetchingGames } from './../../../Reducers/IGDB/igdbActions';
-import { timeoutPromise } from '../../../Lib/promiseHelper';
-import FormError from './../../../UI.d/FormError';
+import { timeoutPromise } from '../../../../Lib/promiseHelper';
+import { SearchGamesFieldProps } from '.';
+import FormError from '../../../../UI.d/FormError';
+import { IGDB_TIMEOUT } from '../../../../Lib/constants';
 
- const SearchGames = (props: any) => {
+ export const SearchGamesField = (props: SearchGamesFieldProps) => {
      const {
         fetchingGames,
          setGames
@@ -19,14 +18,12 @@ import FormError from './../../../UI.d/FormError';
     const searchGames = async () => {
         try {
             fetchingGames();
-            const timeout = timeoutPromise(10000);
+            const timeout = timeoutPromise(IGDB_TIMEOUT);
             const games = await axios.get(`/api/games/search/${search}`);
             const response = await Promise.race<any>([timeout, games]);
             
             if(response.timeout) setErrors([{field: 'search', message: 'Search has timed out'}]);
             else if(response.data) {
-                console.log(response.data);
-                console.log('setting searched games in redux');
                 setGames(response.data);
             }
         }catch (error) {
@@ -37,6 +34,7 @@ import FormError from './../../../UI.d/FormError';
     const handleSubmit = async (e?: any) => {
         e.preventDefault();
         
+        setErrors([]);
         const errors: FormError[] = [];
         if(!search) errors.push({field: 'search', message: 'Search value required'});
 
@@ -44,7 +42,6 @@ import FormError from './../../../UI.d/FormError';
             setErrors(errors);
             return;
         } else  {
-            console.log('searching games');
             searchGames();
         }
     }
@@ -88,7 +85,3 @@ import FormError from './../../../UI.d/FormError';
     )
     
 }
-
-const mapDispatchToProps =  {setGames, fetchingGames};
-
-export default connect( null , mapDispatchToProps)(SearchGames);
