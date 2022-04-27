@@ -27,13 +27,6 @@ const PrivateRoute = ({
     loggedIn,
   ...otherProps
 }: IProps )  => {
-  const {
-    history,
-    match,
-  } = otherProps;
-
-
-
   return(
     <Route {...otherProps} render={(p) => (
         loggedIn ?

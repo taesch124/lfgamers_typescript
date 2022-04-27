@@ -32,7 +32,7 @@ export const GamesList = (props: GamesListProps) => {
             }
         }
         retrieveGames();
-    }, []);
+    }, [fetchingGames, setGames]);
 
     return (
         <Segment>

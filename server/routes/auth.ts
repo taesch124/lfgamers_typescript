@@ -1,4 +1,5 @@
-const express = require('express');
+import * as express from 'express';
+// const express = require('express');
 const passport = require('passport');
 
 const AuthController = require('./../controllers/authController.ts');

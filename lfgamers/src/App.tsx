@@ -1,8 +1,8 @@
 import React from 'react';
 import { connect, ConnectedProps } from 'react-redux';
 import axios from 'axios';
-import { withRouter, Switch, Route, RouteComponentProps, Redirect, match } from 'react-router-dom';
-import { Grid, Loader, Container } from 'semantic-ui-react';
+import { withRouter, Switch, Route, RouteComponentProps, Redirect } from 'react-router-dom';
+import { Loader, Container } from 'semantic-ui-react';
 
 import Navbar from './Components/Navbar';
 import Login from './Components/Auth/login';
@@ -42,7 +42,7 @@ const App = (props: AppProps) => {
 
   const [checked, setChecked] = React.useState<boolean>(false);
 
-  const checkForUser = async () => {
+  const checkForUser = React.useCallback(async () => {
     if(loggedIn) return;
 
     try {
@@ -56,9 +56,9 @@ const App = (props: AppProps) => {
     } catch (error) {
       console.error(error);
     }
-  }
+  }, [loggedIn, logon]);
 
-  const checkForGame = async () => {
+  const checkForGame = React.useCallback(async () => {
     console.log(match);
     const gameId = match.params.gameId;
         if(gameId) {
@@ -72,13 +72,13 @@ const App = (props: AppProps) => {
           setChecked(true);
           history.push('/games/browse');
         }
-  }
+  }, [history, match, setChecked]);
 
   React.useEffect(() => {
     if(!loggedIn && !checked) {
       checkForUser();
     }
-  }, []);
+  }, [loggedIn, checked, checkForUser]);
 
   React.useEffect(() => {
     console.log('log in state changed to ' + loggedIn);
@@ -88,7 +88,7 @@ const App = (props: AppProps) => {
     } else {
       setChecked(true);
     }
-  }, [loggedIn]);
+  }, [loggedIn, checked, checkForGame]);
 
   if(!checked) {
     return (

@@ -42,7 +42,7 @@ export function GamePage(props: GamePageProps) {
                         <Grid.Row>
                             {game.poster &&
                                 <Grid.Column width={3}>
-                                    <img src={game.poster} className="game-poster" />
+                                    <img alt="game poster" src={game.poster} className="game-poster" />
                                 </Grid.Column>
                             }
                             <Grid.Column width={13}>

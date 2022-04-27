@@ -8,11 +8,13 @@ const authRouter = require('./routes/auth.ts');
 const gamesRouter = require('./routes/games.ts');
 const threadsRouter = require('./routes/threads.ts');
 
+import { checkTwitchApiConnection } from './middlewares/twitch';
+
 const app = express();
 const PORT = process.env.PORT || 8080;
 require('./config/passport.ts')(passport);
 
-const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost/LFGamers_Typescript';
+const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/LFGamers_Typescript';
 
 mongoose.connect(MONGODB_URI, {newUrlParser: true});
 
@@ -31,7 +33,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use('/api/auth', authRouter);
-app.use('/api/games', gamesRouter);
+app.use('/api/games', checkTwitchApiConnection, gamesRouter);
 app.use('/api/threads', threadsRouter);
 
 //production mode

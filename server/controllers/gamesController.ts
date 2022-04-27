@@ -1,6 +1,7 @@
 const Game = require('./../models/Game.ts');
 const igdb = require('./../api/igdb.ts');
-const moment = require('moment');
+import * as moment from 'moment';
+// const moment = require('moment');
 
 async function getAndSavePopularGames() {
     try {

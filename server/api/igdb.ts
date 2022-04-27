@@ -1,17 +1,16 @@
-const Dotenv = require('dotenv').config();
+import { TwitchAPI } from "./twitch";
+import { applicationKeys } from '../config/keys';
+
 const moment = require('moment');
-const Keys = require('./../config/keys.ts');
 const axios = require('axios');
 
 const fieldList = require('./../config/igdb.ts').igdbGameFieldList;
 const genres = require('./../config/igdb.ts').igdbGenres;
 const platforms = require('./../config/igdb.ts').igdbPlatforms;
-const baseUrl = 'https://api-v3.igdb.com';
-axios.defaults.headers.common['user-key'] = Keys.igdb;
+const baseUrl = 'https://api.igdb.com/v4';
+axios.defaults.headers.common['Client-ID'] = applicationKeys.twitch.clientId;
 axios.defaults.headers.common['Accept'] = 'application/json';
 axios.defaults.headers.common['Content-Type'] = 'application/apicalypse';
-
-
 
 async function searchPopularGames() {
     let currentDate = new Date();
@@ -21,6 +20,7 @@ async function searchPopularGames() {
     const limit = 10;
     console.log(currentDate, startDate, endDate);
 
+    axios.defaults.headers.common['Authorization'] = `Bearer ${TwitchAPI.getAccessToken()}`;
     let url = `${baseUrl}/games`;
     let body = `fields ${fields};
     limit ${limit};
@@ -45,6 +45,8 @@ async function searchGames(searchPhrase) {
     let fields = fieldList.join(',');
     const limit = 10;
 
+    console.log(TwitchAPI.getAccessToken());
+    axios.defaults.headers.common['Authorization'] = `Bearer ${TwitchAPI.getAccessToken()}`;
     const url = `${baseUrl}/games`;
     let body = `fields ${fields};
     limit ${limit};

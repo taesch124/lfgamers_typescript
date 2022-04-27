@@ -1,4 +1,5 @@
-const express = require('express');
+import * as express from 'express';
+// const express = require('express');
 const igdb = require('./../api/igdb.ts');
 const gamesController = require('./../controllers/gamesController.ts');
 
@@ -45,7 +46,7 @@ router.get('/search/:search', async (req, res) => {
 router.get('/games/game/:gameId', async (req, res) => {
     const gameId = req.params.gameId;
     if(gameId) {
-        const game = getGameById(gameId);
+        const game = await gamesController.getGameById(gameId);
         return game;
     } else {
         return res.json({

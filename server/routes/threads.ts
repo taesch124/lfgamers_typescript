@@ -1,4 +1,5 @@
-const express = require('express');
+import * as express from 'express';
+// const express = require('express');
 
 const router = express.Router();
 const commentController = require('./../controllers/commentController.ts');

@@ -4,7 +4,6 @@ const igdbGameFieldList = [
     'first_release_date',
     'summary',
     'aggregated_rating',
-    'popularity',
     'genres.*',
     'platforms.*',
     'cover'

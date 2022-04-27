@@ -1,5 +1,5 @@
 import { connect, ConnectedProps } from 'react-redux';
-import { CreateThreadForm, CreateThreadFormValues } from './createThread';
+import { CreateThreadForm } from './createThread';
 import { AppState } from '../../../Reducers/store';
 
 const mapStateToProps = (state: AppState) => ({

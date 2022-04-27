@@ -12,29 +12,28 @@ export function ThreadsContainer(props: ThreadsContainerProps) {
         game,
         threads,
         fetchingThreads,
-        selectedThread,
         fetchThreads,
         setThreads,
     } = props;
 
     const [creatingThread, setCreatingThread] = React.useState<boolean>(false);
 
-    React.useEffect(() => {
-        getThreads();
-    }, []);
-
-    if(!game) return <div/>;
-
-    const getThreads = async () => {
+    const getThreads = React.useCallback(async () => {
+        if (!game) return;
+        
         fetchThreads();
         try {
             const threads = (await axios.get(`/api/threads/game/${game._id}`)).data;
             console.log(threads);
             setThreads(threads);
-        } catch(error) {
+        } catch (error) {
             console.error(error);
         }
-    }
+    }, [game, fetchThreads, setThreads]);
+
+    React.useEffect(() => {
+        getThreads();
+    }, [getThreads]);
 
     return (
         <Grid>
